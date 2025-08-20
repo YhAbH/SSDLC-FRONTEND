@@ -1,10 +1,15 @@
 <template>
   <div class="incidence-list">
     <h2>Mis Incidencias</h2>
-    <button @click="logout">Cerrar Sesión</button><br></br><br></br>
+    <button @click="logout">Cerrar Sesión</button><br /><br />
 
     <router-link to="/generate_incidence">
       <button>Generar Nueva Incidencia</button>
+    </router-link>
+
+    <!-- 👇 Aquí añadimos el nuevo botón -->
+    <router-link to="/alta-personal">
+      <button>Alta de Personal</button>
     </router-link>
 
     <div v-if="incidences.length">
@@ -13,7 +18,6 @@
           {{ i.type }}
           <span class="status" :class="i.status">{{ i.status }}</span>
         </h3>
-        >
         <p><strong>Ubicación:</strong> {{ i.location }}</p>
         <p>{{ i.description }}</p>
         <p v-if="i.attachment">
@@ -25,6 +29,7 @@
     <p v-else>No hay incidencias registradas.</p>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted } from 'vue'
 import axios from '@/api/axios'
@@ -51,13 +56,14 @@ const logout = async () => {
 }
 
 const getFileUrl = (path) => {
-  return 'http://127.0.0.1:8000/storage/${path}'
+  return `http://127.0.0.1:8000/storage/${path}`
 }
 
 const formateDate = (datetime) => {
   return new Date(datetime).toLocaleDateString()
 }
 </script>
+
 <style scoped>
 .incidence-list {
   max-width: 800px;
