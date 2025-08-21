@@ -7,7 +7,6 @@
       <button>Generar Nueva Incidencia</button>
     </router-link>
 
-    <!-- 👇 Aquí añadimos el nuevo botón -->
     <router-link to="/alta-personal">
       <button>Alta de Personal</button>
     </router-link>
@@ -42,11 +41,13 @@ const router = useRouter()
 
 onMounted(async () => {
   try {
-    const res = await axios.get('/api/reports')
+    const res = await axios.get('/reports') // ✔ corregido, sin duplicar /api
     incidences.value = res.data
   } catch (error) {
     console.error('Error al obtener reportes:', error)
-    router.push('/login')
+    if (error.response?.status === 401) {
+      router.push('/login') // solo redirigir si no está autorizado
+    }
   }
 })
 
@@ -55,13 +56,9 @@ const logout = async () => {
   router.push('/login')
 }
 
-const getFileUrl = (path) => {
-  return `http://127.0.0.1:8000/storage/${path}`
-}
+const getFileUrl = (path) => `http://127.0.0.1:8000/storage/${path}`
 
-const formateDate = (datetime) => {
-  return new Date(datetime).toLocaleDateString()
-}
+const formateDate = (datetime) => new Date(datetime).toLocaleDateString()
 </script>
 
 <style scoped>

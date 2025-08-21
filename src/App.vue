@@ -9,22 +9,13 @@ import { onMounted } from 'vue'
 import axios from './api/axios'
 
 onMounted(() => {
-  getCSRFToken()
+  getUser()
 })
-
-const getCSRFToken = async () => {
-  try {
-    await axios.get('/sanctum/csrf-cookie')
-    await getUser()
-  } catch (error) {
-    console.error('Error al obtener CSRF Token:', error)
-  }
-}
 
 const getUser = async () => {
   try {
-    const response = await axios.get('/api/user')
-    console.log('Usuario autenticado:', response.data)
+    const response = await axios.get('/user') // <- ya tu baseURL en axios es /api
+    //console.log('Usuario autenticado:', response.data)
   } catch (error) {
     if (error.response?.status === 401) {
       console.log('Usuario no autenticado')
